@@ -1,0 +1,70 @@
+openapi: 3.0.1
+info:
+  title: Get Resumes by Job ID
+  description: Returns parsed text from all applicant resumes (PDF) who applied for the specified Job ID.
+  version: 1.0.0
+
+paths:
+  /resumes/{job_id}:
+    get:
+      summary: Read Resumes for a Job
+      description: Fetches and reads all PDF resumes submitted for a specific Job ID and returns their extracted text.
+      operationId: getResumesForJob
+      parameters:
+        - name: job_id
+          in: path
+          required: true
+          description: The unique Job ID (e.g., JD001) to retrieve applicant resumes for.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved and parsed resumes
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  job_id:
+                    type: string
+                    example: JD001
+                  resumes:
+                    type: object
+                    additionalProperties:
+                      type: string
+                    example:
+                      FM001: "John Doe - React Developer with 4 years experience..."
+                      FM002: "Jane Smith - Full-stack engineer skilled in Angular, Node.js..."
+        '404':
+          description: No applicants found for the given Job ID
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: "No applicants found for Job ID JD001"
+        '500':
+          description: Server or database error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: "Database connection failed"
+
+servers:
+  - url: https://61ff8e795682.ngrok-free.app
+    description: Draft server

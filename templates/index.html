@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>STATS JOBS - Job Portal</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet"/>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    main {
+      flex: 1;
+    }
+    body {
+      font-family: sans-serif;
+      background-color:  #eb8b9d;
+    }
+    .navbar-brand {
+      font-weight: bold;
+      font-size: 1.5rem;
+      color: #0077b6;
+    }
+
+    .job-card {
+      border-left: 4px solid #0077b6;
+      padding: 20px;
+      border-radius: 10px;
+      background-color: white;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.2s ease-in-out;
+    }
+    .job-card:hover {
+      transform: scale(1.02);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    }
+    .job-title {
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: #343a40;
+    }
+    .job-meta {
+      font-size: 0.9rem;
+      color: #6c757d;
+    }
+    .job-description {
+      font-size: 0.95rem;
+      color: #495057;
+    }
+    .footer {
+      background-color: #0077b6;
+      color: white;
+      padding: 20px 0;
+    }
+    .btn-apply {
+      background-color: #0077b6;
+      color: white;
+    }
+    .btn-apply:hover {
+      background-color: #023e8a;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center" href="#">
+        <img src="{{ url_for('static', filename='statslogo.png') }}" alt="STATS JOBS" width="40" height="40" class="me-2" />
+        <span class="fw-bold fs-4 text-primary mb-0">STATS JOBS</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <main>
+    <section class="py-5 text-center bg-light">
+      <div class="container">
+        <h1 class="display-5 fw-bold">Find Your Dream Job</h1>
+        <p class="lead text-muted">Opportunities updated regularly.</p>
+      </div>
+    </section>
+
+    <!-- Job Listings -->
+    <section class="container my-5">
+      <div class="row g-4">
+        {% if jobs %}
+          {% for job in jobs %}
+            {% set job_title = job.title.strip() if job.title else "Job Title Unavailable" %}
+            <div class="col-md-6 col-lg-4">
+              <div class="job-card shadow-sm">
+                <div class="job-title mb-2">{{ job_title }}</div>
+                <div class="job-meta mb-2">
+                  <div><i class="bi bi-geo-alt"></i> {{ job.location or 'Location Unknown' }}</div>
+                  <div><i class="bi bi-building"></i> {{ job.company or 'Company Unknown' }}</div>
+                </div>
+                <div class="job-description mb-3">
+                  {{ job.description | clean_jd | truncate_words(40) }}
+
+                </div>
+                <div class="d-flex gap-2">
+                  <a href="{{ job.applyLink }}" class="btn btn-apply btn-sm">Apply Now</a>
+                  <a href="{{ url_for('job_detail', job_id=job.applyLink.split('=')[-1]) }}" class="btn btn-outline-primary btn-sm">View Job</a>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        {% else %}
+          <div class="col-12 text-center text-muted">
+            <p>No job postings available at the moment. Please check back soon.</p>
+          </div>
+        {% endif %}
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer text-center mt-auto">
+    <div class="container">
+      <p class="mb-0">© 2025 STATS JOBS | All Rights Reserved</p>
+      <small>Contact: careers@statsjobs.in</small>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

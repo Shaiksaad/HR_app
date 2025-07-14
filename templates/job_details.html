@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Job Details - STATS JOBS</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #a3bfb3;
+    }
+    .navbar-brand {
+      font-weight: bold;
+      font-size: 1.5rem;
+      color: #0077b6;
+    }
+    .job-details {
+      background-color: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    }
+    .footer {
+      background-color: #0077b6;
+      color: white;
+      padding: 20px 0;
+    }
+    .btn-back {
+      background-color: #0077b6;
+      color: white;
+    }
+    .btn-back:hover {
+      background-color: #023e8a;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center" href="/">
+        <img src="{{ url_for('static', filename='statslogo.png') }}" alt="STATS JOBS" width="40" height="40" class="me-2" />
+        <span class="fw-bold fs-4 text-primary mb-0">STATS JOBS</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- Job Details -->
+ <div class="container my-5">
+<!--  <h2 class="fw-bold mb-3">{{ job.title }}</h2>-->
+<!--  <p class="text-muted">{{ job.company }} · {{ job.location }}</p>-->
+  <p><strong>Job ID:</strong> {{ job.job_id }}</p>
+
+  <hr>
+  <div class="mb-4">
+    {{ job.description | format_jd }}
+  </div>
+
+  <div class="d-flex gap-2">
+    <a href="{{ url_for('apply_job') }}?job_id={{ job.job_id }}" class="btn btn-primary">Apply Now</a>
+    <a href="{{ url_for('index') }}" class="btn btn-secondary">← Back to Listings</a>
+  </div>
+</div>
+
+
+  <!-- Footer -->
+  <footer class="footer text-center mt-auto">
+    <div class="container">
+      <p class="mb-0">© 2025 STATS JOBS | All Rights Reserved</p>
+      <small>Contact: careers@statsjobs.in</small>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

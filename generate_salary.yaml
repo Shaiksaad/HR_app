@@ -1,0 +1,68 @@
+openapi: 3.0.1
+info:
+  title: Salary Slip Generation API
+  description: Generates a salary slip, calculates deductions, stores in DB, and saves as a PDF file locally.
+  version: 1.0.0
+
+servers:
+  - url:  https://61ff8e795682.ngrok-free.app  # 🔁 Replace with actual deployment URL
+
+paths:
+  /generate-salary-slip:
+    post:
+      summary: Generate and store a salary slip for an employee
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - employee_id
+                - salary
+              properties:
+                employee_id:
+                  type: string
+                  example: EMP001
+                  description: Unique employee ID
+                salary:
+                  type: number
+                  example: 50000
+                  description: Gross salary amount
+      responses:
+        '200':
+          description: Salary slip generated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Salary slip generated and saved as PDF for EMP001.
+                  pdf_path:
+                    type: string
+                    example: salary_slips/EMP001_2025-07-13.pdf
+                  data:
+                    type: object
+                    properties:
+                      employee_id:
+                        type: string
+                      gross_salary:
+                        type: number
+                      tax:
+                        type: number
+                      pf:
+                        type: number
+                      net_salary:
+                        type: number
+                      slip_date:
+                        type: string
+                        format: date
+        '400':
+          description: Missing required parameters
+        '500':
+          description: Server error or database failure

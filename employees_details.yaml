@@ -1,0 +1,78 @@
+openapi: 3.0.3
+info:
+  title: Employee Details API
+  version: 1.0.0
+  description: API to fetch employee details using employee ID from the employee_details table.
+
+servers:
+  - url: https://61ff8e795682.ngrok-free.app
+    description: Local development server
+
+paths:
+  /employee/{emp_id}:
+    get:
+      summary: Get employee details by Employee ID
+      operationId: getEmployeeById
+      parameters:
+        - name: emp_id
+          in: path
+          required: true
+          description: Unique Employee ID
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully fetched employee details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  employee:
+                    type: object
+                    properties:
+                      emp_id:
+                        type: string
+                        example: EMP001
+                      employee_name:
+                        type: string
+                        example: John Doe
+                      email_id:
+                        type: string
+                        example: john.doe@example.com
+                      department:
+                        type: string
+                        example: Engineering
+                      date_of_joining:
+                        type: string
+                        format: date
+                        example: 2022-01-15
+        '404':
+          description: Employee not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: No employee found with ID EMP123
+        '500':
+          description: Internal server error or database connection failure
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: Database connection failed

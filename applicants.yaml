@@ -1,0 +1,60 @@
+openapi: 3.0.1
+info:
+  title: STATS JOBS - Applicant API
+  description: API to fetch list of applicants for a given Job ID.
+  version: 1.0.0
+
+servers:
+  - url:  https://fed636af638a.ngrok-free.app   # Replace with your actual domain or public IP
+
+paths:
+  /api/applicants/{job_id}:
+    get:
+      summary: Get Applicants for a Job
+      description: Returns a list of applicants who applied for the specified Job ID.
+      parameters:
+        - name: job_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the job (e.g., JD001)
+      responses:
+        '200':
+          description: A list of applicants
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  job_id:
+                    type: string
+                    example: JD001
+                  applicants:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        form_id:
+                          type: string
+                          example: FM001
+                        name:
+                          type: string
+                          example: John Doe
+                        email:
+                          type: string
+                          example: john.doe@example.com
+                        phone:
+                          type: string
+                          example: 9876543210
+                        resume_file:
+                          type: string
+                          example: resume_john.pdf
+                        applied_on:
+                          type: string
+                          format: date
+                          example: 2025-07-09
+        '404':
+          description: No applicants found for the given Job ID
+        '500':
+          description: Internal Server Error

@@ -1,0 +1,62 @@
+openapi: 3.0.3
+info:
+  title: STATSCOG Labs Job API
+  version: 1.0.0
+  description: API for retrieving all job postings created through the STATSCOG Labs recruitment portal.
+
+servers:
+  - url: https://61ff8e795682.ngrok-free.app
+    description: Production server (HTTPS)
+
+paths:
+  /jobs:
+    get:
+      summary: Get all posted jobs
+      description: Returns a list of all jobs that have been posted, including job ID, title, location, summary, and date.
+      tags:
+        - Jobs
+      responses:
+        '200':
+          description: Successfully retrieved list of jobs
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  jobs:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        job_id:
+                          type: string
+                          example: JD001
+                        job_title:
+                          type: string
+                          example: Data Scientist
+                        job_location:
+                          type: string
+                          example: Bangalore
+                        job_summary:
+                          type: string
+                          example: You will build ML pipelines and data workflows...
+                        job_date:
+                          type: string
+                          format: date
+                          example: 2025-07-11
+        '500':
+          description: Database connection failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: Database connection failed

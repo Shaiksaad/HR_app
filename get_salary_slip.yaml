@@ -1,0 +1,68 @@
+openapi: 3.0.1
+info:
+  title: Salary Slip Download API
+  description: >
+    API to fetch the download link for the latest salary slip PDF for an employee.
+    The link points to a downloadable PDF hosted on the server.
+  version: 1.0.0
+
+servers:
+  - url: https://61ff8e795682.ngrok-free.app  # Update if your domain changes
+
+paths:
+  /salary-slip/{emp_id}:
+    get:
+      summary: Get salary slip download link
+      operationId: getSalarySlipLink
+      tags:
+        - Salary Management
+      parameters:
+        - name: emp_id
+          in: path
+          required: true
+          description: Employee ID (e.g., EP001)
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Download link for the employee's salary slip
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: ✅ Your latest salary slip is ready. Click the link below to download.
+                  download_link:
+                    type: string
+                    example: https://7a0f414dbad2.ngrok-free.app/download-slip/EP001_2025-07-13.pdf
+        '404':
+          description: No salary slip found for the employee
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: Salary slip not found.
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: Internal server error occurred.

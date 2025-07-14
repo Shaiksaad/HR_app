@@ -1,0 +1,58 @@
+openapi: 3.0.3
+info:
+  title: Email Sending API
+  version: 1.0.0
+
+servers:
+  - url: https://61ff8e795682.ngrok-free.app
+    description: Draft server
+
+paths:
+  /send-email:
+    post:
+      summary: Send an email to a candidate
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                to:
+                  type: string
+                  example: candidate@example.com
+                subject:
+                  type: string
+                  example: Interview Invitation
+                body:
+                  type: string
+                  example: "We are pleased to invite you for an interview..."
+      responses:
+        '200':
+          description: Email sent successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Email sent successfully
+        '500':
+          description: Server or SMTP error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: "Failed to send email: <error detail>"
+
+components: {}
