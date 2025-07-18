@@ -5,7 +5,7 @@ info:
   description: API for receiving job descriptions from Watsonx Orchestrate and posting to a Flask app
 
 servers:
-  - url:  https://61ff8e795682.ngrok-free.app   # Replace it with your actual domain
+  - url: https://8413a03063c2.ngrok-free.app   # Replace it with your actual domain
 
 paths:
   /post-job:

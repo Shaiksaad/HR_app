@@ -7,7 +7,7 @@ info:
   version: 1.0.0
 
 servers:
-  - url: https://61ff8e795682.ngrok-free.app  # Update if your domain changes
+  - url:  https://8413a03063c2.ngrok-free.app  # Update if your domain changes
 
 paths:
   /salary-slip/{emp_id}:

@@ -7,3 +7,4 @@ beautifulsoup4~=4.13.4
 markdown2~=2.5.3
 reportlab~=4.4.2
 gunicorn
+pandas
