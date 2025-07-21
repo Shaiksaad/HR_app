@@ -10,3 +10,5 @@ gunicorn
 pandas~=2.3.1
 ibm-cos-sdk~=2.14.2
 ibm-cos-sdk-core~=2.14.2
+fpdf2~=2.8.3
+python-dotenv~=1.1.1
