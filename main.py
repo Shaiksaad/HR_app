@@ -2,12 +2,11 @@ import os
 import pandas as pd
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 from werkzeug.utils import secure_filename
-from datetime import datetime
 from markupsafe import Markup
-import re
 import ibm_boto3
 from ibm_botocore.client import Config
-from io import BytesIO, StringIO
+from io import StringIO
+import re
 
 COS_ENDPOINT = "https://s3.eu-gb.cloud-object-storage.appdomain.cloud"
 COS_API_KEY_ID = "vGvzRIGC-XVsKLgjESPRgOuHPthk5jZax27uSnvke0Zy"
@@ -131,6 +130,29 @@ def format_jd(text):
     return Markup(html_output)
 
 
+def extract_location(description):
+    if not description:
+        return "Unknown"
+
+    # Remove line breaks and extra whitespace
+    clean_desc = re.sub(r'\\n|\n', ' ', description)
+    clean_desc = re.sub(r'\s+', ' ', clean_desc).strip()
+
+    # Search for a location pattern
+    match = re.search(r'(?:Job\s*)?Location\s*:\s*([A-Za-z ]+)', clean_desc, re.IGNORECASE)
+    if match:
+        return match.group(1).strip()
+
+    # Fallback: try 'Location XYZ' pattern
+    match_inline = re.search(r'Location\s+([A-Za-z ]+)', clean_desc, re.IGNORECASE)
+    if match_inline:
+        location = match_inline.group(1).strip()
+        location = re.split(r'\b(Job\s*Type|About\s*Us|Summary)\b', location)[0].strip()
+        return location if location else "Unknown"
+
+    return "Unknown"
+
+
 @app.route('/')
 def index():
     # COS connection check and bucket content listing
@@ -155,10 +177,12 @@ def index():
     for _, row in jobs_df.sort_values(by="job_date", ascending=False).iterrows():
         job_id = row['job_id']
         job_description = row['job_description']
+        location = extract_location(job_description)
+
         jobs.append({
             "title": f"Job {job_id}",
             "company": "Statscog Labs",
-            "location": "Unknown",
+            "location": location,
             "description": job_description[:100] + "...",
             "applyLink": f"/apply?job_id={job_id}",
             "viewLink": f"/job/{job_id}"
